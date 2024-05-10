@@ -27,3 +27,29 @@ BG = pygame.transform.scale(pygame.image.load('background.jpg'), (WIDTH, HEIGHT)
 
 #Sets jupiter.png As The Planet We'll Use And Scales It
 PLANET = pygame.transform.scale(pygame.image.load('jupiter.png'), (PLANET_SIZE * 2, PLANET_SIZE * 2))
+
+#Colors Using RGB
+WHITE = (255, 255, 255)
+RED = (255, 0, 0)
+BLUE = (0, 0, 255)
+
+def main():
+    running = True
+    clock = pygame.time.Clock()
+
+    while running:
+        
+        #Sets The FPS
+        clock.tick(FPS)
+
+        #Detects The Your Mouse's Position
+        mouse_pos = pygame.mouse.get_pos()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+    pygame.quit()
+
+if __name__ == '__main__':
+    main()
