@@ -43,7 +43,8 @@ class Planet:
     
     def draw(self):
         win.blit(PLANET, (self.x - PLANET_SIZE, self.y - PLANET_SIZE))
-    
+
+#Handles The Details Of The Spacecraft(Ship)   
 class Spacecraft:
     def __init__(self, x, y, vel_x, vel_y, mass):
         self.x = x
@@ -51,6 +52,20 @@ class Spacecraft:
         self.vel_x = vel_x
         self.vel_y = vel_y
         self.mass = mass
+
+    #Handles The Math For How The Spacecraft(Ship) Moves When Launched And How It Reacts When The Spacecrafts Mass Interacts With The Planets Mass
+    def move(self, planet=None):
+        distance = math.sqrt((self.x - planet.x)**2 + (self.y - planet.y)**2)
+        force = (G * self.mass * planet.mass) / distance ** 2
+        acceleration = force / self.mass
+        angle = math.atan2(planet.y - self.y, planet.x - self.x)
+
+        acceleration_x = acceleration * math.cos(angle)
+        acceleration_y = acceleration * math.sin(angle)
+        self.vel_x += acceleration_x
+        self.vel_y += acceleration_y
+        self.x += self.vel_x
+        self.y += self.vel_y
 
     #Handles The Draw Function Of Our Ship(Obj) As It Travels. Just A Red Circle Rn
     def draw(self):
@@ -62,7 +77,7 @@ def create_ship(location, mouse):
     m_x, m_y = mouse
     vel_x = (m_x - t_x) / VEL_SCALE
     vel_y = (m_y - t_y) / VEL_SCALE
-    obj = Spacecraft(t_x,t_y, vel_x, vel_y, SHIP_MASS)
+    obj = Spacecraft(t_x, t_y, vel_x, vel_y, SHIP_MASS)
     return obj
 
 def main():
@@ -108,14 +123,14 @@ def main():
             pygame.draw.circle(win, RED, temp_obj_pos, OBJ_SIZE)
 
         for obj in objects[:]:
-            obj.draw
+            obj.draw()
             obj.move(planet)
 
             #Removes Our Ship's(Obj's) If They Fly Off Screen Or Collide With The Plant To Prevent Bottleneck
             off_screen = obj.x < 0 or obj.x > WIDTH or obj.y < 0 or obj.y > HEIGHT
             collided = math.sqrt((obj.x - planet.x)**2 + (obj.y - planet.y)**2) <= PLANET_SIZE
             if off_screen or collided:
-                object.remove(obj)
+                objects.remove(obj)
 
         planet.draw()
         
