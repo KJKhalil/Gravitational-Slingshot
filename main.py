@@ -36,7 +36,13 @@ BLUE = (0, 0, 255)
 
 #class Planet:
     
-#class Spacecraft
+class Spacecraft:
+    def __init__(self, x, y, vel_x, vel_y, mass):
+        self.x = x
+        self.y = y
+        self.vel_x = vel_x
+        self.vel_y = vel_y
+        self.mass = mass
 
 #Handles The "Launching" Of Our Ship(Obj)
 def create_ship(location, mouse):
@@ -76,6 +82,14 @@ def main():
 
         #Puts Our Background Into The Loop
         win.blit(BG, (0, 0))
+
+        if temp_obj_pos:
+
+            #Draws A White Line To Show Us The Direction We're Launching Our Ship After Using MOUSEBUTTONDOWN
+            pygame.draw.line(win, WHITE, temp_obj_pos, mouse_pos, 2)
+            
+            #Draws Our Ship(Obj) Just A Red Circle Rn
+            pygame.draw.circle(win, RED, temp_obj_pos, OBJ_SIZE)
 
         pygame.display.update()
 
