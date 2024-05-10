@@ -13,11 +13,17 @@ PLANET_MASS = 100
 SHIP_MASS = 5
 G = 5
 
-#FPS The Window Runs At
-FPS = 60
-
 #Size Of The Planet And Our Ship(Obj)
 PLANET_SIZE = 50
 OBJ_SIZE = 5
 
 VEL_SCALE = 100
+
+#FPS The Window Runs At
+FPS = 60
+
+#Sets The Background To Our background.jpg Img And Scales It
+BG = pygame.transform.scale(pygame.image.load('background.jpg'), (WIDTH, HEIGHT))
+
+#Sets jupiter.png As The Planet We'll Use And Scales It
+PLANET = pygame.transform.scale(pygame.image.load('jupiter.png'), (PLANET_SIZE * 2, PLANET_SIZE * 2))
