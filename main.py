@@ -34,7 +34,15 @@ WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 BLUE = (0, 0, 255)
 
-#class Planet:
+#Handles The Details To Draw/Input jupiter.png As Our Planet 
+class Planet:
+    def __init__(self, x, y, mass):
+        self.x = x
+        self.y = y
+        self.mass = mass
+    
+    def draw(self):
+        win.blit(PLANET, (self.x - PLANET_SIZE, self.y - PLANET_SIZE))
     
 class Spacecraft:
     def __init__(self, x, y, vel_x, vel_y, mass):
@@ -44,7 +52,11 @@ class Spacecraft:
         self.vel_y = vel_y
         self.mass = mass
 
-#Handles The "Launching" Of Our Ship(Obj)
+    #Handles The Draw Function Of Our Ship(Obj) As It Travels. Just A Red Circle Rn
+    def draw(self):
+        pygame.draw.circle(win, RED, (int(self.x), int(self.y)), OBJ_SIZE)
+
+#Handles The "Launching" Of Our Ship(Obj) And Gives It Mass
 def create_ship(location, mouse):
     t_x, t_y = location
     m_x, m_y = mouse
@@ -56,6 +68,10 @@ def create_ship(location, mouse):
 def main():
     running = True
     clock = pygame.time.Clock()
+
+    #Inputs Our Planet, Centers It, And Gives It Mass
+    planet = Planet(WIDTH // 2, HEIGHT // 2, PLANET_MASS)
+
     objects = []
     temp_obj_pos = None
 
@@ -88,9 +104,21 @@ def main():
             #Draws A White Line To Show Us The Direction We're Launching Our Ship After Using MOUSEBUTTONDOWN
             pygame.draw.line(win, WHITE, temp_obj_pos, mouse_pos, 2)
             
-            #Draws Our Ship(Obj) Just A Red Circle Rn
+            #Draws Our Ship(Obj) When You Initially Click MOUSEBUTTONDOWN. Just A Red Circle Rn
             pygame.draw.circle(win, RED, temp_obj_pos, OBJ_SIZE)
 
+        for obj in objects[:]:
+            obj.draw
+            obj.move(planet)
+
+            #Removes Our Ship's(Obj's) If They Fly Off Screen Or Collide With The Plant To Prevent Bottleneck
+            off_screen = obj.x < 0 or obj.x > WIDTH or obj.y < 0 or obj.y > HEIGHT
+            collided = math.sqrt((obj.x - planet.x)**2 + (obj.y - planet.y)**2) <= PLANET_SIZE
+            if off_screen or collided:
+                object.remove(obj)
+
+        planet.draw()
+        
         pygame.display.update()
 
     pygame.quit()
