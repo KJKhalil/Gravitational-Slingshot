@@ -17,6 +17,7 @@ G = 5
 PLANET_SIZE = 50
 OBJ_SIZE = 5
 
+#Used To Slow Down The Launch Of Our Ship In def create_ship
 VEL_SCALE = 100
 
 #FPS The Window Runs At
@@ -33,9 +34,24 @@ WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 BLUE = (0, 0, 255)
 
+#class Planet:
+    
+#class Spacecraft
+
+#Handles The "Launching" Of Our Ship(Obj)
+def create_ship(location, mouse):
+    t_x, t_y = location
+    m_x, m_y = mouse
+    vel_x = (m_x - t_x) / VEL_SCALE
+    vel_y = (m_y - t_y) / VEL_SCALE
+    obj = Spacecraft(t_x,t_y, vel_x, vel_y, SHIP_MASS)
+    return obj
+
 def main():
     running = True
     clock = pygame.time.Clock()
+    objects = []
+    temp_obj_pos = None
 
     while running:
         
@@ -48,6 +64,20 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+
+            #Allows Us To Use MOUSEBUTTONDOWN To Aim Where We Launch The Ship(obj)
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if temp_obj_pos:
+                    obj = create_ship(temp_obj_pos, mouse_pos)
+                    objects.append(obj)
+                    temp_obj_pos = None
+                else:
+                    temp_obj_pos = mouse_pos
+
+        #Puts Our Background Into The Loop
+        win.blit(BG, (0, 0))
+
+        pygame.display.update()
 
     pygame.quit()
 
